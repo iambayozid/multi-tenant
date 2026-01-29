@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(req: NextRequest) {
-  const host = req.headers.get("host");
+  const hostname = req.headers.get("host");
+  const host = hostname?.replace("www.", "");
+
   console.log("host", host);
   if (host === process.env.HOST_NAME) {
     return NextResponse.next();
-  } else if (host === "doyelmusic.com") {
+  } else if (!host?.includes(process.env.HOST_NAME!)) {
     return NextResponse.rewrite(
       new URL(`/s/tenant1${req.nextUrl.pathname}`, req.url),
     );
