@@ -9,7 +9,7 @@ export function proxy(req: NextRequest) {
     return NextResponse.next();
   } else if (!host?.includes(process.env.HOST_NAME!)) {
     return NextResponse.rewrite(
-      new URL(`/s/tenant1${req.nextUrl.pathname}`, req.url),
+      new URL(`/s/${host}${req.nextUrl.pathname}`, req.url),
     );
   } else if (host?.includes(`.${process.env.HOST_NAME}`)) {
     const tenant = host.split(".")[0];
